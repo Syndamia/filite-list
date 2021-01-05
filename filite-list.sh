@@ -19,7 +19,7 @@ Where:
 	-v,   --version                Shows the vresion of the script
 	-h,   --help, -?               Display this help message
 	-d,   --dependencies           List required dependencies for the script
-	      --host [LINK]            Use the given host. MUST be in the format of "https://example:port.com", without the trailing forward slash!
+	-ho,  --host [LINK]            Use the given host. MUST be in the format of "https://example:port.com", without the trailing forward slash!
 	-f,   --files                  Show only the file entries
 	-l,   --links                  Show only the link entries
 	-t,   --text                   Show only the text entries
@@ -43,14 +43,14 @@ show_numerical_id=false
 while [ ! -z $1 ]; do
 	case $1 in
 		-v|--version)
-			printf "1.0\n"
+			printf "1.1\n"
 			exit
 			;;
 		-d|--dependencies)
 			printf "\nDependencies:\n-------------\ncurl\njq\n\n"
 			exit
 			;;
-		--host)
+		-ho|--host)
 			shift
 			filite_host=$1
 			;;
