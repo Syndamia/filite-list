@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Made by Kamen Mladenov, aka Syndamia, under the GNU GPL-3.0 license
+# Source: https://github.com/Syndamia/filite-list
+
 if ! [ -x "$(command -v curl)" ]; then
 	printf "You need to install curl!\n"
 	exit 
