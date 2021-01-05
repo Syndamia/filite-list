@@ -16,16 +16,16 @@ help_info=$(cat <<HELP
 filite-list.sh [OPTIONS] -- script to show you the IDs and their values of filite entries on a given server
 
 Where:
-	-v,   --version       Shows the vresion of the script
-	-h,   --help, -?      Display this help message
-	-d,   --dependencies  List required dependencies for the script
-	      --host [LINK]   Use the given host. MUST be in the format of "https://example:port.com", without the trailing forward slash!
-	-f,   --files         Show only the file entries
-	-l,   --links         Show only the link entries
-	-t,   --text          Show only the text entries
-	-oi,  --only-id       Show only IDs of entries (and NOT their values)
+	-v,   --version                Shows the vresion of the script
+	-h,   --help, -?               Display this help message
+	-d,   --dependencies           List required dependencies for the script
+	      --host [LINK]            Use the given host. MUST be in the format of "https://example:port.com", without the trailing forward slash!
+	-f,   --files                  Show only the file entries
+	-l,   --links                  Show only the link entries
+	-t,   --text                   Show only the text entries
+	-oi,  --only-id                Show only IDs of entries (and NOT their values)
 	-n,   --number-limit [AMOUNT]  Limit how many entries to show from each type
-	-nid, --numerical-id  Show the numerical IDs, rather than the text IDs (the ones that are used in links)
+	-nid, --numerical-id           Show the numerical IDs, rather than the text IDs (the ones that are used in links)
 HELP
 )
 
