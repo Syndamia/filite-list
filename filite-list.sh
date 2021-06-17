@@ -3,14 +3,6 @@
 # Made by Kamen Mladenov, aka Syndamia, under the GNU GPL-3.0 license
 # Source: https://github.com/Syndamia/filite-list
 
-if ! [ -x "$(command -v curl)" ]; then
-	printf "You need to install curl!\n"
-	exit 
-elif ! [ -x "$(command -v jq)" ]; then
-	printf "You need to install jq!\n"
-	exit
-fi
-
 help_info=$(cat <<HELP
 
 filite-list.sh [OPTIONS] -- script to show you the IDs and their values of filite entries on a given server
@@ -82,6 +74,14 @@ while [ ! -z $1 ]; do
 
 	shift
 done
+
+if ! [ -x "$(command -v curl)" ]; then
+	printf "You need to install curl!\n"
+	exit 
+elif ! [ -x "$(command -v jq)" ]; then
+	printf "You need to install jq!\n"
+	exit
+fi
 
 # Automatically switch on show_numerical_id, when the server doesn't support getting string IDs from numeric ID
 if [ -z "$(curl -sX GET $filite_host/id/0)" ] && [[ $show_numerical_id == false ]]; then
