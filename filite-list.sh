@@ -114,7 +114,11 @@ while (( l < ${#types[@]} )); do
 	ids=($(echo $data | jq -r .[].id | tr ' ' '\n'))
 
 	if [[ $only_link == false ]]; then
-		info=($(echo $data | jq -r .[].${info_name[$l]} | tr ' ' '\n'))
+		# Get all desired information (content or smth else) and from each one:
+		# - take from beginning to first space or new line or tab or carriage return
+		# - or take from beginning to end (if those characters don't exist)
+		# - take only the first 50 characters
+		info=($(echo $data | jq -r ".[].${info_name[$l]} | match(\"^.*?(?=[ \n\t\r])|^.*$\") | .string | .[0:50]"))
 	fi
 
 	# Print information for each file/link/text
