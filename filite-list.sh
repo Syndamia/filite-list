@@ -16,7 +16,7 @@ help_info=$(cat <<HELP
 filite-list.sh [OPTIONS] -- script to show you the IDs and their values of filite entries on a given server
 
 Where:
-	-v,   --version                Shows the vresion of the script
+	-v,   --version                Shows the version of the script
 	-h,   --help, -?               Display this help message
 	-d,   --dependencies           List required dependencies for the script
 	-ho,  --host [LINK]            Use the given host. MUST be in the format of "https://example:port.com", without the trailing forward slash!
@@ -83,7 +83,7 @@ while [ ! -z $1 ]; do
 	shift
 done
 
-# Automatically switch on show_numerical_id, when the server doesn't suport getting string IDs from numeric ID
+# Automatically switch on show_numerical_id, when the server doesn't support getting string IDs from numeric ID
 if [ -z "$(curl -sX GET $filite_host/id/0)" ] && [[ $show_numerical_id == false ]]; then
 	printf "\nWARNING: The host's version of filite doesn't support get string IDs by giving numerical IDs!\n         Only numerical ID's will be shown!\n"
 	show_numerical_id=true
@@ -109,7 +109,7 @@ while (( l < ${#types[@]} )); do
 		continue
 	fi
 
-	# Get all string ids and maybe info
+	# Get all available info and ids
 	data=$(curl -sX GET $filite_host/${types[$l]})
 	ids=($(echo $data | jq -r .[].id | tr ' ' '\n'))
 
@@ -119,7 +119,7 @@ while (( l < ${#types[@]} )); do
 
 	# Print information for each file/link/text
 	i=0
-	while (( i < ${#ids[@]} && ( show_limit < 0 || i < show_limit ) ));	do
+	while (( i < ${#ids[@]} && ( show_limit < 0 || i < show_limit ) )); do
 		# Make the id, depending on script parameters
 		if [[ $show_numerical_id == false ]]; then
 			id=$(curl -sX GET $filite_host/id/${ids[$i]})
