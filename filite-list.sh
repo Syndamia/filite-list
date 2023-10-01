@@ -19,6 +19,7 @@ Where:
 	-oi,  --only-id                Show only IDs of entries (and NOT their values)
 	-n,   --number-limit [AMOUNT]  Limit how many entries to show from each type
 	-nid, --numerical-id           Show the numerical IDs, rather than the text IDs (the ones that are used in links)
+	-a,   --auth                   Authenticate with these credentials
 HELP
 )
 
@@ -66,6 +67,13 @@ while [ ! -z $1 ]; do
 		-nid|--numerical-id)
 			show_numerical_id=true
 			;;
+		-a|--auth)
+			shift
+			auth=$1
+			if [[ $auth != *":"* ]]; then
+				auth=":$1"
+			fi
+			;;
 		-h|--help|-?)
 			printf "$help_info\n\n"
 			exit
@@ -85,7 +93,7 @@ elif ! [ -x "$(command -v jq)" ]; then
 fi
 
 # Automatically switch on show_numerical_id, when the server doesn't support getting string IDs from numeric ID
-if [ -z "$(curl -sX GET $filite_host/id/0)" ] && [[ $show_numerical_id == false ]]; then
+if [ -z "$(curl -u $auth -sX GET $filite_host/id/0)" ] && [[ $show_numerical_id == false ]]; then
 	printf "\nWARNING: The host's version of filite doesn't support get string IDs by giving numerical IDs!\n         Only numerical ID's will be shown!\n"
 	show_numerical_id=true
 fi
@@ -104,14 +112,14 @@ while (( l < ${#types[@]} )); do
 	printf '\n%s\n------\n' "${type_name[$l]}"
 
 	# Check if you can even get the type entries
-	if (( 399 < $(curl -s -o /dev/null -w "%{http_code}" $filite_host/${types[$l]}) )); then
-		printf "Server returned an Error!\n"
+	if (( 399 < $(curl -s -o /dev/null -u $auth -w "%{http_code}" $filite_host/${types[$l]}) )); then
+		printf "Server returned an error!\n"
 		((l++))
 		continue
 	fi
 
 	# Get all available info and ids
-	data=$(curl -sX GET $filite_host/${types[$l]})
+	data=$(curl -sX GET -u $auth $filite_host/${types[$l]})
 	ids=($(echo $data | jq -r .[].id | tr ' ' '\n'))
 
 	if [[ $only_link == false ]]; then
@@ -127,7 +135,7 @@ while (( l < ${#types[@]} )); do
 	while (( i < ${#ids[@]} && ( show_limit < 0 || i < show_limit ) )); do
 		# Make the id, depending on script parameters
 		if [[ $show_numerical_id == false ]]; then
-			id=$(curl -sX GET $filite_host/id/${ids[$i]})
+			id=$(curl -u $auth -sX GET $filite_host/id/${ids[$i]})
 		else
 			id=${ids[$i]}
 		fi
